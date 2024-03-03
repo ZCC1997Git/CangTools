@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/zhangchenchen/miniconda3/envs/clang/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/home/zhangchenchen/miniconda3/envs/clang/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
