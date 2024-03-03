@@ -28,6 +28,20 @@ public:
   }
 };
 
+class LambdaVisitor : public RecursiveASTVisitor<LambdaVisitor> {
+public:
+  bool VisitLambdaExpr(LambdaExpr *lambda) {
+    // llvm::outs() << "Found lambda expression at: "
+    //              << lambda->getBeginLoc()
+    //              << "\n";
+    
+    // for (auto param : lambda->parameters()) {
+    //   llvm::outs() << "  Parameter: " << param->getNameAsString() << "\n";
+    // }
+    return true;
+  }
+};
+
 class FunctionConsumer : public ASTConsumer {
 public:
 /*用于处理一个翻译单元。翻译单元是C++程序的顶级实体，通常对应于一个源文件及其包含的头文件。
@@ -40,6 +54,16 @@ private:
   FunctionVisitor visitor;
 };
 
+class LambdaConsumer : public ASTConsumer {
+public:
+  virtual void HandleTranslationUnit(ASTContext &Context) {
+    visitor.TraverseDecl(Context.getTranslationUnitDecl());
+  }
+
+private:
+  LambdaVisitor visitor;
+};
+
 class FunctionAction : public ASTFrontendAction {
 public:
 /*这是FunctionAction类的成员函数，它是ASTFrontendAction的一个方法，
@@ -50,9 +74,24 @@ public:
   }
 };
 
+class LambdaAction : public ASTFrontendAction {
+public:
+  virtual std::unique_ptr<ASTConsumer>
+  CreateASTConsumer(CompilerInstance &Compiler, llvm::StringRef InFile) {
+    return std::unique_ptr<ASTConsumer>(new LambdaConsumer);
+  }
+};
+
+// int main(int argc, char **argv) {
+//   if (argc > 1) {
+//     clang::tooling::runToolOnCode(
+//         std::unique_ptr<clang::FrontendAction>(new FunctionAction), argv[1]);
+//   }
+// }
+
 int main(int argc, char **argv) {
   if (argc > 1) {
     clang::tooling::runToolOnCode(
-        std::unique_ptr<clang::FrontendAction>(new FunctionAction), argv[1]);
+        std::unique_ptr<clang::FrontendAction>(new LambdaAction), argv[1]);
   }
 }
