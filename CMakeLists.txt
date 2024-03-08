@@ -10,8 +10,16 @@ include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
 add_executable(ParFun ParseFunction.cpp)
+add_executable(ParLam ParseLambda.cpp)
 
 target_link_libraries(ParFun
+  PRIVATE
+  clangTooling
+  clangBasic
+  clangASTMatchers
+  )
+
+  target_link_libraries(ParLam
   PRIVATE
   clangTooling
   clangBasic

@@ -7,6 +7,8 @@
         "new": "cpp",
         "optional": "cpp",
         "stdexcept": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "charconv": "cpp",
+        "ios": "cpp"
     }
 }
